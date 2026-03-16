@@ -52,7 +52,7 @@ namespace CuteEngine.Audio
 
                 List<string> expiredIds = new List<string>();
 
-                foreach (var kvp in _trackingDict)
+                foreach (var kvp in _trackingDict) //TODO found error collection modified
                 {
                     string id = kvp.Key;
                     float endTime = kvp.Value;
