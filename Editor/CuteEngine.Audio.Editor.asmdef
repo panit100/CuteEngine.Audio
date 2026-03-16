@@ -1,0 +1,16 @@
+{
+    "name": "CuteEngine.Audio.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6e50df307bdebef4189d7b514d720b3c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
