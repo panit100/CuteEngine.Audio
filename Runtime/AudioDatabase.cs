@@ -20,9 +20,9 @@ namespace CuteEngine.Audio
 
                 if (string.IsNullOrEmpty(data.name))
                 {
-                    if (data.clips != null && data.clips.Length > 0)
+                    if (data.clips != null)
                     {
-                        audioName = data.clips[0].name;
+                        audioName = data.name;
                     }
                     else
                     {
