@@ -3,19 +3,28 @@ using UnityEngine;
 
 namespace CuteEngine.Audio
 {
+    public enum AudioGroupType
+    {
+        Master,
+        Music,
+        SFX,
+        UI,
+        Voice,
+    }
+
     [System.Serializable]
     public class AudioData
     {
-        public string name;
-        public AudioClip clips;
-        public bool randomPitch = false;
-        [ShowIf("randomPitch")][MinMaxFloat(-3f, 3f)] public Vector2 pitchRange = new Vector2(-3f, 3f);
+        [SerializeField] string name;
+        [SerializeField] AudioClip clip;
+        [SerializeField] AudioGroupType groupType = AudioGroupType.Master;
+        [SerializeField] bool randomPitch = false;
+        [ShowIf("randomPitch")][MinMaxFloat(-3f, 3f)][SerializeField] Vector2 pitchRange = new Vector2(-3f, 3f);
 
-        public AudioClip GetClip()
-        {
-            //TODO
-            if (clips == null) return null;
-            return clips;
-        }
+        public string Name => name;
+        public AudioClip Clip => clip;
+        public bool RandomPitch => randomPitch;
+        public Vector2 PitchRange => pitchRange;
+        public AudioGroupType GroupType => groupType;
     }
 }

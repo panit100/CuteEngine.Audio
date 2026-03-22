@@ -54,5 +54,19 @@ namespace CuteEngine.Audio
             Source.UnPause();
             IsPause = false;
         }
+
+        public void Mute(bool mute)
+        {
+            if (Source == null) return;
+
+            Source.mute = mute;
+        }
+
+        public void SetVolume(float volume)
+        {
+            if (Source == null) return;
+
+            Source.volume = volume;
+        }
     }
 }

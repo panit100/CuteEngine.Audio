@@ -1,29 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace CuteEngine.Audio
 {
     public static class AudioManager
     {
-        private const string DATABASEPATH = "CuteEngine/Audio/AudioDatabase"; //TODO user can change it in Editor
-
         private static Transform parent;
         private static AudioUpdater updater;
         private static Dictionary<string, AudioHandle> audioHandles = new Dictionary<string, AudioHandle>();
         private static Stack<AudioSource> sourcePool = new Stack<AudioSource>();
 
-        private static AudioDatabase database;
-        private static bool isInit = false;
+        private static AudioSetting setting;
 
-        private static void Init()
+        public static void Init(AudioSetting settingIn)
         {
-            if (isInit) return;
-
-            database = Resources.Load<AudioDatabase>(DATABASEPATH);
-            isInit = true;
+            setting = settingIn;
+            CreateAudioRoot();
         }
 
-        private static AudioSource GetAudioSource()
+        private static void CreateAudioRoot()
         {
             if (parent == null)
             {
@@ -32,6 +28,11 @@ namespace CuteEngine.Audio
 
                 updater = parent.gameObject.AddComponent<AudioUpdater>();
             }
+        }
+
+        private static AudioSource GetAudioSource()
+        {
+            CreateAudioRoot();
 
             if (sourcePool.Count > 0)
             {
@@ -90,26 +91,26 @@ namespace CuteEngine.Audio
 
         public static string Play(string id, string name, bool loop = false)
         {
-            if (!isInit) Init();
             if (audioHandles.TryGetValue(id, out AudioHandle existingHandle))
             {
                 existingHandle.Play(loop);
                 return id;
             }
 
-            AudioData audioData = database.GetAudioData(name);
+            AudioData audioData = setting.GetAudioData(name, out AudioMixerGroup audioMixerGroup);
             if (audioData == null)
             {
                 AudioLogger.LogError($"Audio with name : {name} not found in database");
                 return "";
             }
 
-            AudioClip clip = audioData.GetClip();
+            AudioClip clip = audioData.Clip;
             AudioSource audioSource = GetAudioSource();
 
             //TODO Init AudioSource
             audioSource.clip = clip;
             audioSource.spatialBlend = 0; // 0 For 2D, 1 For 3D
+            audioSource.outputAudioMixerGroup = audioMixerGroup;
 
             AudioHandle audioHandle = new AudioHandle(id, clip, audioSource);
             AddHandle(id, audioHandle);
